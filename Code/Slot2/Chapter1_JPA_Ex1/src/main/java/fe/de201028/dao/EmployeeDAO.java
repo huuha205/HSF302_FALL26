@@ -18,11 +18,17 @@ public class EmployeeDAO {
         EntityManager em = emf.createEntityManager();
 
         try {
+            // Transient: e is a new object and is not managed by JPA yet.
+
             em.getTransaction().begin();
 
+            // Transient -> Managed
             em.persist(e);
 
+            // JPA will insert the Employee into the database when the transaction is committed.
             em.getTransaction().commit();
+
+            // After commit, e remains Managed while it is associated with this EntityManager.
 
         } catch (RuntimeException ex) {
 
@@ -33,6 +39,7 @@ public class EmployeeDAO {
             throw ex;
 
         } finally {
+            // Managed -> Detached when EntityManager is closed.
             em.close();
         }
     }
