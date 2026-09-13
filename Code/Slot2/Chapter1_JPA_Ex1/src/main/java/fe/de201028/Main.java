@@ -63,5 +63,33 @@ public class Main {
         dao.delete(e.getId());
 
         System.out.println("Deleted employee ID: " + e.getId());
+
+        // 7. Duplicate email test
+        Employee e1 = new Employee();
+        e1.setFullName("Employee One");
+        e1.setEmail("duplicate@gmail.com");
+        e1.setSalary(new BigDecimal("10000000"));
+        e1.setGender(Gender.MALE);
+        e1.setHireDate(LocalDate.now());
+        e1.setActive(true);
+
+        try {
+            dao.save(e1);
+
+            Employee e2 = new Employee();
+            e2.setFullName("Employee Two");
+            e2.setEmail("duplicate@gmail.com");
+            e2.setSalary(new BigDecimal("12000000"));
+            e2.setGender(Gender.FEMALE);
+            e2.setHireDate(LocalDate.now());
+            e2.setActive(true);
+
+            dao.save(e2);
+
+            System.out.println("Duplicate email saved!");
+
+        } catch (Exception ex) {
+            System.out.println("Duplicate email detected!");
+        }
     }
 }
