@@ -17,6 +17,24 @@ public class Department {
 
     private String location;
 
+    // TODO 2.3: Inverse side
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees = new ArrayList<>();
+
+    public List<Employee> getEmployees() { return employees; }
+    public void setEmployees(List<Employee> employees) { this.employees = employees; }
+
+    // TODO 2.4: Helper methods
+    public void addEmployee(Employee e) {
+        employees.add(e);
+        e.setDepartment(this);
+    }
+
+    public void removeEmployee(Employee e) {
+        employees.remove(e);
+        e.setDepartment(null);
+    }
+
     public Department() {
     }
 
@@ -44,10 +62,5 @@ public class Department {
         this.location = location;
     }
 
-    // TODO 2.3: Inverse side
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Employee> employees = new ArrayList<>();
 
-    public List<Employee> getEmployees() { return employees; }
-    public void setEmployees(List<Employee> employees) { this.employees = employees; }
 }
