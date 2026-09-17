@@ -126,4 +126,30 @@ public class DepartmentDAO {
             em.close();
         }
     }
+
+    public void demonstrateNPlusOne() {
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
+
+            List<Department> departments =
+                    em.createQuery(
+                            "SELECT d FROM Department d",
+                            Department.class
+                    ).getResultList();
+
+            for (Department d : departments) {
+
+                System.out.println(
+                        d.getName()
+                                + " - Employees: "
+                                + d.getEmployees().size()
+                );
+            }
+
+        } finally {
+            em.close();
+        }
+    }
 }
