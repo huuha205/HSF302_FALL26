@@ -152,4 +152,17 @@ public class DepartmentDAO {
             em.close();
         }
     }
+
+    // TODO 2.9: Fix N+1 bằng JOIN FETCH
+    public List<Department> findAllWithEmployees() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT DISTINCT d FROM Department d JOIN FETCH d.employees",
+                    Department.class
+            ).getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
