@@ -1,5 +1,8 @@
 package fu.de201028.dao;
 
+import jakarta.persistence.EntityTransaction;
+import fu.de201028.pojo.Project;
+
 import fu.de201028.pojo.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -111,4 +114,30 @@ public class EmployeeDAO {
             em.close();
         }
     }
+
+    // TODO 5.6
+    public void assignEmployeeToProject(Long employeeId, Long projectId) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            Employee employee = em.find(Employee.class, employeeId);
+            Project project = em.find(Project.class, projectId);
+
+            employee.assignToProject(project);
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+
 }
