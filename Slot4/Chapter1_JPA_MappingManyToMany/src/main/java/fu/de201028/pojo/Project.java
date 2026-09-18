@@ -3,6 +3,8 @@ package fu.de201028.pojo;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "projects")
@@ -25,6 +27,9 @@ public class Project {
 
     public Project() {
     }
+
+    @ManyToMany(mappedBy = "projects")
+    private Set<Employee> employees = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,5 +77,9 @@ public class Project {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 }
