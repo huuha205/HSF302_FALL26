@@ -86,6 +86,13 @@ public class Employee {
         return email != null ? email.hashCode() : 0;
     }
 
+    // TODO 5.5
+    public void assignToProject(Project p) {
+        this.projects.add(p);
+        p.getEmployees().add(this);
+    }
+
+
     // GETTERS & SETTERS
 
     public Long getId() {
