@@ -1,0 +1,114 @@
+package fu.de201028.dao;
+
+import fu.de201028.pojo.Employee;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+import java.util.List;
+
+public class EmployeeDAO {
+
+    private static final EntityManagerFactory emf =
+            Persistence.createEntityManagerFactory("hsf302FU");
+
+    public void save(Employee employee) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            em.persist(employee);
+
+            em.getTransaction().commit();
+
+        } catch (RuntimeException ex) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw ex;
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Employee> findAll() {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            return em.createQuery(
+                    "SELECT e FROM Employee e",
+                    Employee.class
+            ).getResultList();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public Employee findById(Long id) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            return em.find(Employee.class, id);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public Employee update(Employee employee) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            Employee updated = em.merge(employee);
+
+            em.getTransaction().commit();
+
+            return updated;
+
+        } catch (RuntimeException ex) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw ex;
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public void delete(Long id) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            Employee employee = em.find(Employee.class, id);
+
+            if (employee != null) {
+                em.remove(employee);
+            }
+
+            em.getTransaction().commit();
+
+        } catch (RuntimeException ex) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw ex;
+
+        } finally {
+            em.close();
+        }
+    }
+}
