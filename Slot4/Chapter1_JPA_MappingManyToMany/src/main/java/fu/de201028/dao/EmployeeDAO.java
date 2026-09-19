@@ -194,5 +194,30 @@ public class EmployeeDAO {
         }
     }
 
+    // TODO 5.11
+    public void deactivateEmployee(Long employeeId) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            Employee employee = em.find(Employee.class, employeeId);
+
+            if (employee != null) {
+                employee.setActive(false);
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
 
 }
