@@ -139,5 +139,31 @@ public class EmployeeDAO {
         }
     }
 
+    // TODO 5.8
+    public void countActiveEmployeesAndSumSalaryByProject() {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            List<Object[]> results = em.createQuery(
+                    "SELECT p.projectName, COUNT(e), SUM(e.salary) " +
+                            "FROM Project p JOIN p.employees e " +
+                            "WHERE e.active = true " +
+                            "GROUP BY p.projectName",
+                    Object[].class
+            ).getResultList();
+
+            for (Object[] row : results) {
+                System.out.println(
+                        "Project: " + row[0]
+                                + " | Active employees: " + row[1]
+                                + " | Total salary: " + row[2]
+                );
+            }
+
+        } finally {
+            em.close();
+        }
+    }
+
 
 }
