@@ -92,6 +92,11 @@ public class Employee {
         p.getEmployees().add(this);
     }
 
+    // TODO 5.9
+    public void unassignFromProject(Project p) {
+        this.projects.remove(p);
+        p.getEmployees().remove(this);
+    }
 
     // GETTERS & SETTERS
 

@@ -139,6 +139,7 @@ public class EmployeeDAO {
         }
     }
 
+
     // TODO 5.8
     public void countActiveEmployeesAndSumSalaryByProject() {
         EntityManager em = emf.createEntityManager();
