@@ -1,3 +1,5 @@
+package com.hsf302.ch4.pojo;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,8 @@ public class Department {
         this.code = code;
         this.name = name;
     }
+
+
 
     // Helper đồng bộ 2 chiều
     public void addStudent(Student s) {
