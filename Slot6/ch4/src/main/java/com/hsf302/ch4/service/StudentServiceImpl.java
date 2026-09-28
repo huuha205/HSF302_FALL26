@@ -170,5 +170,25 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findActiveSummaries();
     }
 
+    @Override
+    public Page<Student> findActiveByDepartment(
+            String deptCode,
+            int pageIndex,
+            int size) {
+
+        Pageable pageable = PageRequest.of(
+                pageIndex,
+                size,
+                Sort.by("gpa").descending()
+        );
+
+        return studentRepository.findActiveByDepartment(
+                deptCode,
+                pageable
+        );
+    }
+
+
+
 
 }

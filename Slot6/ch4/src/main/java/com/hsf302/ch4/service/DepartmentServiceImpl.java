@@ -2,6 +2,7 @@ package com.hsf302.ch4.service;
 
 import com.hsf302.ch4.dto.DepartmentStatDTO;
 import com.hsf302.ch4.pojo.Department;
+import com.hsf302.ch4.pojo.Student;
 import com.hsf302.ch4.repository.DepartmentRepository;
 import com.hsf302.ch4.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -48,4 +51,6 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .orElseThrow(() ->
                         new IllegalArgumentException("Department not found: " + code));
     }
+
+
 }
