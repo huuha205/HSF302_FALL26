@@ -7,8 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 @Order(2)
 @RequiredArgsConstructor
@@ -17,9 +15,32 @@ public class ExerciseRunner implements CommandLineRunner {
     private final DepartmentService departmentService;
     private final StudentService studentService;
 
-
     @Override
     public void run(String... args) {
-        // Các TODO sẽ được thêm từ TODO 6 trở đi
+        todo6();
+    }
+
+    private void todo6() {
+        title("TODO 6: count / findById / existsById");
+
+        System.out.println("Departments: " + departmentService.count());
+        System.out.println("Students   : " + studentService.count());
+
+        studentService.findById(1L).ifPresentOrElse(
+                s -> System.out.println("findById(1) -> " + s),
+                () -> System.out.println("findById(1) -> Not found")
+        );
+
+        System.out.println("findById(99) -> " +
+                studentService.findById(99L)
+                        .map(Object::toString)
+                        .orElse("Not found"));
+
+        System.out.println("existsById(4) department -> " +
+                departmentService.existsById(4L));
+    }
+
+    private void title(String t) {
+        System.out.println("\n===== " + t + " =====");
     }
 }

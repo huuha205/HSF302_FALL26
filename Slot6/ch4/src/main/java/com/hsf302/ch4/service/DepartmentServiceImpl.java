@@ -15,4 +15,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final StudentRepository studentRepository;
 
     // Các method được cài đặt dần từ TODO 6
+    @Override
+    public long count() {
+        return departmentRepository.count();
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return departmentRepository.existsById(id);
+    }
 }
