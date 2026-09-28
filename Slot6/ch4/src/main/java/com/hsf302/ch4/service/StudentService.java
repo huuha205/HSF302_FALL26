@@ -43,4 +43,6 @@ public interface StudentService {
     long countByDepartment(String deptCode);
 
     List<Student> findTop3ByGpa();
+
+    List<Student> findGoodStudents(String deptCode, double minGpa);
 }
