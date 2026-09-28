@@ -59,4 +59,6 @@ public interface StudentService {
             String deptCode,
             int pageIndex,
             int size);
+
+    Student updateGpa(String studentCode, double newGpa);
 }
