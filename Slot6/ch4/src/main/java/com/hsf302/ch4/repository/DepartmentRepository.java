@@ -1,7 +1,8 @@
 package com.hsf302.ch4.repository;
 
 
-
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import com.hsf302.ch4.dto.DepartmentStatDTO;
 import com.hsf302.ch4.pojo.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
                     "ORDER BY d.code"
     )
     List<DepartmentStatDTO> getDepartmentStats();
+
+    @Query("SELECT d FROM Department d LEFT JOIN FETCH d.students WHERE d.code = :code")
+    Optional<Department> findByCodeWithStudents(@Param("code") String code);
 }
