@@ -5,7 +5,9 @@ import com.hsf302.ch4.pojo.Department;
 import com.hsf302.ch4.pojo.Gender;
 import com.hsf302.ch4.pojo.Student;
 import com.hsf302.ch4.repository.StudentRepository;
+import com.hsf302.ch4.specification.StudentSpecs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -214,6 +216,31 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public int deactivateLowGpa(double threshold) {
         return studentRepository.deactivateLowGpa(threshold);
+    }
+
+    @Override
+    @Transactional
+    public long deleteInactiveStudents() {
+        return studentRepository.deleteByActiveFalse();
+    }
+
+    @Override
+    public List<Student> search(
+            String kw,
+            String deptCode,
+            Double minGpa,
+            Boolean active) {
+
+        Specification<Student> spec =
+                Specification.where(StudentSpecs.nameContains(kw))
+                        .and(StudentSpecs.inDepartment(deptCode))
+                        .and(StudentSpecs.gpaAtLeast(minGpa))
+                        .and(StudentSpecs.isActive(active));
+
+        return studentRepository.findAll(
+                spec,
+                Sort.by("fullName")
+        );
     }
 
 
