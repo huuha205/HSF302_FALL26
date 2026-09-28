@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import com.hsf302.ch4.pojo.Student;
+import org.springframework.data.domain.Page;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 @Order(2)
@@ -16,8 +20,10 @@ public class ExerciseRunner implements CommandLineRunner {
     private final StudentService studentService;
 
     @Override
+
     public void run(String... args) {
         todo6();
+        todo7();
     }
 
     private void todo6() {
@@ -43,4 +49,37 @@ public class ExerciseRunner implements CommandLineRunner {
     private void title(String t) {
         System.out.println("\n===== " + t + " =====");
     }
+
+    private void todo7() {
+        title("TODO 7: Sort & Pageable");
+
+        printList(
+                "All students order by GPA desc",
+                studentService.findAllOrderByGpaDesc()
+        );
+
+        Page<Student> page =
+                studentService.findPage(1, 3, "fullName");
+
+        printList(
+                "Page index " + page.getNumber()
+                        + " (size " + page.getSize() + ")",
+                page.getContent()
+        );
+
+        System.out.println(
+                "totalElements=" + page.getTotalElements()
+                        + ", totalPages=" + page.getTotalPages()
+                        + ", hasNext=" + page.hasNext()
+                        + ", hasPrevious=" + page.hasPrevious()
+        );
+    }
+
+    private void printList(String label, Collection<?> list) {
+        System.out.println("-- " + label + ":");
+        list.forEach(o -> System.out.println("   " + o));
+        System.out.println("   -> " + list.size() + " record(s)");
+    }
+
+
 }
