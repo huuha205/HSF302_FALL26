@@ -61,4 +61,6 @@ public interface StudentService {
             int size);
 
     Student updateGpa(String studentCode, double newGpa);
+
+    int deactivateLowGpa(double threshold);
 }
