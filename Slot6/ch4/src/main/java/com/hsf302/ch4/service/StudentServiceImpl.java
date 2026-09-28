@@ -1,5 +1,6 @@
 package com.hsf302.ch4.service;
 
+import com.hsf302.ch4.dto.StudentSummary;
 import com.hsf302.ch4.pojo.Department;
 import com.hsf302.ch4.pojo.Gender;
 import com.hsf302.ch4.pojo.Student;
@@ -162,6 +163,11 @@ public class StudentServiceImpl implements StudentService {
         }
 
         return studentRepository.findTopNByDepartmentNative(deptCode, n);
+    }
+
+    @Override
+    public List<StudentSummary> getActiveSummaries() {
+        return studentRepository.findActiveSummaries();
     }
 
 
