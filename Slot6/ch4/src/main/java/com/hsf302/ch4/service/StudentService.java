@@ -22,4 +22,10 @@ public interface StudentService {
     boolean isEmailExisted(String email);
 
     long countActive();
+
+    List<Student> searchByName(String keyword);
+
+    List<Student> findByEmailDomain(String domain);
+
+    List<Student> findWithoutEmail();
 }
