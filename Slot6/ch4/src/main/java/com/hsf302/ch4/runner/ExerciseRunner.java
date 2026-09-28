@@ -30,6 +30,7 @@ public class ExerciseRunner implements CommandLineRunner {
         todo8();
         todo9();
         todo10();
+        todo11();
     }
 
     private void todo6() {
@@ -140,6 +141,30 @@ public class ExerciseRunner implements CommandLineRunner {
                 studentService.findBornAfter(
                         LocalDate.of(2005, 1, 1)
                 )
+        );
+    }
+
+    private void todo11() {
+        title("TODO 11: Nested property / Top / IsEmpty");
+
+        printList(
+                "Students of SE (order by name)",
+                studentService.findByDepartment("SE")
+        );
+
+        System.out.println(
+                "count students of AI -> "
+                        + studentService.countByDepartment("AI")
+        );
+
+        printList(
+                "Top 3 GPA",
+                studentService.findTop3ByGpa()
+        );
+
+        printList(
+                "Departments without students",
+                departmentService.findDepartmentsWithoutStudents()
         );
     }
 

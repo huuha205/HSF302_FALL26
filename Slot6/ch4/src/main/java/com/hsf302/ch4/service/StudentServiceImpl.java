@@ -1,5 +1,6 @@
 package com.hsf302.ch4.service;
 
+import com.hsf302.ch4.pojo.Department;
 import com.hsf302.ch4.pojo.Gender;
 import com.hsf302.ch4.pojo.Student;
 import com.hsf302.ch4.repository.StudentRepository;
@@ -115,4 +116,22 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findBornAfter(LocalDate date) {
         return studentRepository.findByDobAfter(date);
     }
+
+    @Override
+    public List<Student> findByDepartment(String deptCode) {
+        return studentRepository
+                .findByDepartment_CodeOrderByFullNameAsc(deptCode);
+    }
+
+    @Override
+    public long countByDepartment(String deptCode) {
+        return studentRepository.countByDepartment_Code(deptCode);
+    }
+
+    @Override
+    public List<Student> findTop3ByGpa() {
+        return studentRepository.findTop3ByOrderByGpaDesc();
+    }
+
+
 }
