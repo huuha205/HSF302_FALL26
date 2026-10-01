@@ -31,9 +31,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findWithStudentsByCode(String code);
 
     @Query(value = "SELECT c.* FROM courses c " +
-                   "LEFT JOIN student_course sc ON c.id = sc.course_id " +
+                   "LEFT JOIN student_courses sc ON c.id = sc.course_id " +
                    "GROUP BY c.id, c.code, c.name, c.credits, c.capacity, c.semester " +
-                   "HAVING COUNT(sc.student_code) < c.capacity " +
+                   "HAVING COUNT(sc.student_id) < c.capacity " +
                    "ORDER BY c.code", nativeQuery = true)
     List<Course> findCoursesWithAvailableSeats();
 }
