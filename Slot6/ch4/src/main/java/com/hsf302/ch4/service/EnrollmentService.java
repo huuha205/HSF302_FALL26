@@ -17,4 +17,6 @@ public interface EnrollmentService {
     boolean isEnrolled(String studentCode, String courseCode);
 
     List<Student> findGoodStudentsInCourse(String courseCode, double minGpa);
+
+    List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits);
 }

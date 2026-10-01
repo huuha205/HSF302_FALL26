@@ -68,6 +68,14 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return studentRepository.findGoodStudentsInCourse(courseCode, minGpa);
     }
 
+    @Override
+    public List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits) {
+        if (minCredits < 0) {
+            throw new IllegalArgumentException("minCredits must be >= 0");
+        }
+        return studentRepository.getCreditSummary(minCredits);
+    }
+
     // ===== helper dùng chung cho mọi method =====
     private Student getStudent(String studentCode) {
         if (studentCode == null || studentCode.isBlank()) {
