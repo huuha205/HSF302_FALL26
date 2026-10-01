@@ -29,4 +29,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "students")
     Optional<Course> findWithStudentsByCode(String code);
+
+    @Query(value = "SELECT c.* FROM courses c " +
+                   "LEFT JOIN student_course sc ON c.id = sc.course_id " +
+                   "GROUP BY c.id, c.code, c.name, c.credits, c.capacity, c.semester " +
+                   "HAVING COUNT(sc.student_code) < c.capacity " +
+                   "ORDER BY c.code", nativeQuery = true)
+    List<Course> findCoursesWithAvailableSeats();
 }

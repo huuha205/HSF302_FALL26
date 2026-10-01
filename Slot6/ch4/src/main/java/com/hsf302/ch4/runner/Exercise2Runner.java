@@ -34,6 +34,7 @@ public class Exercise2Runner implements CommandLineRunner {
         todo14();
         todo15();
         todo16();
+        todo17();
     }
 
     private void todo6() {
@@ -149,6 +150,11 @@ public class Exercise2Runner implements CommandLineRunner {
         c.getStudents().stream()
                 .sorted(Comparator.comparing(com.hsf302.ch4.pojo.Student::getFullName))
                 .forEach(st -> System.out.println("   " + st));
+    }
+
+    private void todo17() {
+        title("TODO 17: native query (courses with available seats)");
+        printList("Available courses", courseService.findAvailableCourses());
     }
 
     private void title(String text) {

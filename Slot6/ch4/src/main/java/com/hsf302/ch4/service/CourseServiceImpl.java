@@ -79,4 +79,9 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findWithStudentsByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
     }
+
+    @Override
+    public List<Course> findAvailableCourses() {
+        return courseRepository.findCoursesWithAvailableSeats();
+    }
 }

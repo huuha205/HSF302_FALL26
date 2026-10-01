@@ -30,4 +30,6 @@ public interface CourseService {
     List<Course> findFullCourses();
 
     Course getWithStudents(String code);
+
+    List<Course> findAvailableCourses();
 }
