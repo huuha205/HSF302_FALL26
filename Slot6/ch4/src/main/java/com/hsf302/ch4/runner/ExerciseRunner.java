@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import com.hsf302.ch4.pojo.Student;
 import org.springframework.data.domain.Page;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.List;
 @Component
 @Order(2)
 @RequiredArgsConstructor
+@Profile("ex1")
 public class ExerciseRunner implements CommandLineRunner {
 
     private final DepartmentService departmentService;
