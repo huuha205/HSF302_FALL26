@@ -35,6 +35,7 @@ public class Exercise2Runner implements CommandLineRunner {
         todo15();
         todo16();
         todo17();
+        todo18();
     }
 
     private void todo6() {
@@ -155,6 +156,14 @@ public class Exercise2Runner implements CommandLineRunner {
     private void todo17() {
         title("TODO 17: native query (courses with available seats)");
         printList("Available courses", courseService.findAvailableCourses());
+    }
+
+    private void todo18() {
+        title("TODO 18: Custom Repository (Criteria API dynamic search)");
+        printList("(a) Filter: name like 'data', minCredit=null, sem=null", 
+                courseService.searchDynamic("data", null, null));
+        printList("(b) Filter: name like 'm', minCredit=3, sem='FA26'", 
+                courseService.searchDynamic("m", 3, "FA26"));
     }
 
     private void title(String text) {

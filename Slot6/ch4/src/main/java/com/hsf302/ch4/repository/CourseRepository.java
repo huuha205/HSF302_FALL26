@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import com.hsf302.ch4.dto.CourseStatDTO;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseRepository extends JpaRepository<Course, Long>, CustomCourseRepository {
     Optional<Course> findByCode(String code);
     List<Course> findBySemesterOrderByCodeAsc(String semester);
     long countBySemester(String semester);

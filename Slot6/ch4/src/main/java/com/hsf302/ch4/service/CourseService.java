@@ -32,4 +32,6 @@ public interface CourseService {
     Course getWithStudents(String code);
 
     List<Course> findAvailableCourses();
+
+    List<Course> searchDynamic(String namePart, Integer minCredits, String semester);
 }

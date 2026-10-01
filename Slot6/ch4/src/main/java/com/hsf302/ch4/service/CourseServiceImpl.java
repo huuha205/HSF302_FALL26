@@ -84,4 +84,9 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> findAvailableCourses() {
         return courseRepository.findCoursesWithAvailableSeats();
     }
+
+    @Override
+    public List<Course> searchDynamic(String namePart, Integer minCredits, String semester) {
+        return courseRepository.findCoursesByDynamicFilter(namePart, minCredits, semester);
+    }
 }
