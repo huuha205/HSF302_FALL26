@@ -28,4 +28,6 @@ public interface CourseService {
     List<com.hsf302.ch4.dto.CourseStatDTO> getStatistics();
 
     List<Course> findFullCourses();
+
+    Course getWithStudents(String code);
 }

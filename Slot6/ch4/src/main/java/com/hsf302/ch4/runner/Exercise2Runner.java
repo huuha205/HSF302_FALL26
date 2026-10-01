@@ -4,8 +4,10 @@ import com.hsf302.ch4.pojo.Course;
 import com.hsf302.ch4.service.CourseService;
 import com.hsf302.ch4.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.LazyInitializationException;
 import org.springframework.boot.CommandLineRunner;
 
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ public class Exercise2Runner implements CommandLineRunner {
 
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
+    private final com.hsf302.ch4.service.StudentService studentService;
 
     @Override
     public void run(String... args) {
@@ -30,6 +33,7 @@ public class Exercise2Runner implements CommandLineRunner {
         todo13();
         todo14();
         todo15();
+        todo16();
     }
 
     private void todo6() {
@@ -118,6 +122,33 @@ public class Exercise2Runner implements CommandLineRunner {
         title("TODO 15: SIZE() on collections");
         printList("(a) Full courses", courseService.findFullCourses());
         printList("(b) Students with more than 2 courses", enrollmentService.findStudentsWithMoreThan(2));
+    }
+
+    private void todo16() {
+        title("TODO 16: LazyInitializationException, JOIN FETCH, @EntityGraph");
+
+        // (a) Student trả về từ Service (Exercise 1) → transaction đã đóng → courses chưa được nạp
+        try {
+            com.hsf302.ch4.pojo.Student s = studentService.findByStudentCode("SE001").orElseThrow();
+            System.out.println("(a) courses = " + s.getCourses().size());
+        } catch (LazyInitializationException e) {
+            System.out.println("(a) Caught: " + e.getClass().getSimpleName());
+            System.out.println("    " + e.getMessage());
+        }
+
+        // (b) JOIN FETCH: nạp student + courses trong 1 câu SQL
+        com.hsf302.ch4.pojo.Student s = enrollmentService.getStudentWithCourses("SE001");
+        System.out.println("(b) " + s.getStudentCode() + " - " + s.getFullName());
+        s.getCourses().stream()
+                .sorted(Comparator.comparing(Course::getCode))
+                .forEach(c -> System.out.println("   " + c));
+
+        // (c) @EntityGraph: nạp course + students
+        Course c = courseService.getWithStudents("SWP391");
+        System.out.println("(c) " + c.getCode() + " - " + c.getName());
+        c.getStudents().stream()
+                .sorted(Comparator.comparing(com.hsf302.ch4.pojo.Student::getFullName))
+                .forEach(st -> System.out.println("   " + st));
     }
 
     private void title(String text) {
