@@ -29,4 +29,6 @@ public interface EnrollmentService {
     org.springframework.data.domain.Page<Student> findStudentsInCoursePage(String courseCode, int pageIndex, int size);
 
     void enroll(String studentCode, String courseCode);
+
+    void unenroll(String studentCode, String courseCode);
 }
