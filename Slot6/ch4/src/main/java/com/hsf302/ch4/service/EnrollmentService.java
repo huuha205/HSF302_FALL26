@@ -23,4 +23,8 @@ public interface EnrollmentService {
     List<Student> findStudentsWithMoreThan(int n);
 
     Student getStudentWithCourses(String studentCode);
+
+    List<com.hsf302.ch4.dto.EnrollmentView> getEnrollmentsOfDepartment(String deptCode);
+
+    org.springframework.data.domain.Page<Student> findStudentsInCoursePage(String courseCode, int pageIndex, int size);
 }

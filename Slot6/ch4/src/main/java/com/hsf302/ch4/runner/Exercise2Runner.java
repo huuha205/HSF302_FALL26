@@ -36,6 +36,7 @@ public class Exercise2Runner implements CommandLineRunner {
         todo16();
         todo17();
         todo18();
+        todo19();
     }
 
     private void todo6() {
@@ -164,6 +165,19 @@ public class Exercise2Runner implements CommandLineRunner {
                 courseService.searchDynamic("data", null, null));
         printList("(b) Filter: name like 'm', minCredit=3, sem='FA26'", 
                 courseService.searchDynamic("m", 3, "FA26"));
+    }
+
+    private void todo19() {
+        title("TODO 19: paginate students of HSF302 (size 2, order by fullName)");
+        int pageIndex = 0;
+        org.springframework.data.domain.Page<com.hsf302.ch4.pojo.Student> page;
+        do {
+            page = enrollmentService.findStudentsInCoursePage("HSF302", pageIndex, 2);
+            printList("Page " + pageIndex, page.getContent());
+            pageIndex++;
+        } while (page.hasNext());
+        System.out.println("totalElements = " + page.getTotalElements()
+                + ", totalPages = " + page.getTotalPages());
     }
 
     private void title(String text) {
