@@ -104,6 +104,30 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return studentRepository.findPageByCourseCode(courseCode, pageable);
     }
 
+    @Override
+    @Transactional
+    public void enroll(String studentCode, String courseCode) {
+        Student s = getStudent(studentCode);
+        Course c = getCourse(courseCode);
+        checkAndEnroll(s, c);
+    }
+
+    private void checkAndEnroll(Student s, Course c) {
+        if (!s.isActive()) {
+            throw new IllegalStateException("Student " + s.getStudentCode() + " is inactive");
+        }
+        if (s.getCourses().contains(c)) {
+            throw new IllegalStateException("Student " + s.getStudentCode()
+                    + " already enrolled in " + c.getCode());
+        }
+        int enrolled = c.getStudents().size();
+        if (enrolled >= c.getCapacity()) {
+            throw new IllegalStateException("Course " + c.getCode()
+                    + " is full (" + enrolled + "/" + c.getCapacity() + ")");
+        }
+        s.enroll(c);
+    }
+
     // ===== helper dùng chung cho mọi method =====
     private Student getStudent(String studentCode) {
         if (studentCode == null || studentCode.isBlank()) {
