@@ -68,4 +68,9 @@ public class CourseServiceImpl implements CourseService {
     public List<com.hsf302.ch4.dto.CourseStatDTO> getStatistics() {
         return courseRepository.getCourseStats();
     }
+
+    @Override
+    public List<Course> findFullCourses() {
+        return courseRepository.findFullCourses();
+    }
 }

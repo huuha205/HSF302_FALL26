@@ -19,4 +19,6 @@ public interface EnrollmentService {
     List<Student> findGoodStudentsInCourse(String courseCode, double minGpa);
 
     List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits);
+
+    List<Student> findStudentsWithMoreThan(int n);
 }
