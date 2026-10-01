@@ -359,7 +359,7 @@ public class ExerciseRunner implements CommandLineRunner {
                 departmentService.getStatistics()
         );
     }
-    // TODO 24 - Specification
+    // TODO 24
     private void todo24() {
         title("TODO 24 (Bonus): Specification");
 
