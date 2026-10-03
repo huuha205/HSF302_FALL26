@@ -37,10 +37,16 @@ public class Exercise2Runner implements CommandLineRunner {
         todo17();
         todo18();
         todo19();
+        
+        // Bonus
+        todo25();
+
+        // Part E
         todo20();
         todo21();
         todo22();
         todo23();
+        todo24();
     }
 
     private void todo6() {
@@ -233,6 +239,27 @@ public class Exercise2Runner implements CommandLineRunner {
 
         printList("Courses remaining", courseService.findAllOrderByCode());
         printList("Courses of IA002", enrollmentService.getCoursesOfStudent("IA002"));
+    }
+
+    private void todo24() {
+        title("TODO 24: remove enrollments of inactive students");
+        int deleted = enrollmentService.deleteEnrollmentsOfInactiveStudents();
+        System.out.println("   deleted " + deleted + " rows");
+
+        printCourseStats();
+        printList("Students without courses", enrollmentService.findStudentsWithoutCourses());
+    }
+
+    private void todo25() {
+        title("TODO 25 (Bonus): Specification");
+        System.out.println("Search 1: (null, \"SU26\", null, null)");
+        printList("Result 1", enrollmentService.search(null, "SU26", null, null));
+
+        System.out.println("Search 2: (\"HSF302\", null, \"SE\", 3.5)");
+        printList("Result 2", enrollmentService.search("HSF302", null, "SE", 3.5));
+
+        System.out.println("Search 3: (null, \"FA26\", \"AI\", null)");
+        printList("Result 3", enrollmentService.search(null, "FA26", "AI", null));
     }
 
     private void attempt(String actionName, Runnable action) {
