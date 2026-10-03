@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import com.hsf302.ch4.pojo.Student;
 
 @Service
 @RequiredArgsConstructor
@@ -88,5 +90,32 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> searchDynamic(String namePart, Integer minCredits, String semester) {
         return courseRepository.findCoursesByDynamicFilter(namePart, minCredits, semester);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCourseDirectly(String code) {
+        Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+        courseRepository.delete(c);
+        courseRepository.flush(); // To trigger ConstraintViolationException
+    }
+
+    @Override
+    @Transactional
+    public int deleteCourse(String code) {
+        Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+
+        // Create a copy to avoid ConcurrentModificationException since unenroll modifies the set
+        List<Student> students = new ArrayList<>(c.getStudents());
+        int removedCount = 0;
+        for (Student s : students) {
+            s.unenroll(c);
+            removedCount++;
+        }
+
+        courseRepository.delete(c);
+        return removedCount;
     }
 }

@@ -34,4 +34,8 @@ public interface CourseService {
     List<Course> findAvailableCourses();
 
     List<Course> searchDynamic(String namePart, Integer minCredits, String semester);
+
+    void deleteCourseDirectly(String code);
+
+    int deleteCourse(String code);
 }

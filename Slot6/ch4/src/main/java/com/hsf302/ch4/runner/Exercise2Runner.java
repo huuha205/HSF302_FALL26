@@ -40,6 +40,7 @@ public class Exercise2Runner implements CommandLineRunner {
         todo20();
         todo21();
         todo22();
+        todo23();
     }
 
     private void todo6() {
@@ -214,6 +215,24 @@ public class Exercise2Runner implements CommandLineRunner {
         attempt("switch SE001 PRJ301 -> AIL303",
                 () -> enrollmentService.switchCourse("SE001", "PRJ301", "AIL303"));
         printList("Courses of SE001 (after rollback)", enrollmentService.getCoursesOfStudent("SE001"));
+    }
+
+    private void todo23() {
+        title("TODO 23: delete course from inverse side");
+        try {
+            courseService.deleteCourseDirectly("IAA202");
+            System.out.println("   [OK]   deleteCourseDirectly(IAA202)");
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            System.out.println("   [FAIL] deleteCourseDirectly(IAA202) -> " + e.getClass().getSimpleName());
+        } catch (Exception e) {
+            System.out.println("   [FAIL] deleteCourseDirectly(IAA202) -> " + e.getClass().getSimpleName());
+        }
+
+        int removed = courseService.deleteCourse("IAA202");
+        System.out.println("   removed " + removed + " students from IAA202");
+
+        printList("Courses remaining", courseService.findAllOrderByCode());
+        printList("Courses of IA002", enrollmentService.getCoursesOfStudent("IA002"));
     }
 
     private void attempt(String actionName, Runnable action) {
