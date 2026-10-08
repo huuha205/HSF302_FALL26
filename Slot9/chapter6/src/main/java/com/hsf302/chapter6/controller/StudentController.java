@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Controller
 @RequestMapping("/students")
@@ -34,8 +38,15 @@ public class StudentController {
     // ==================== READ ALL ====================
 
     @GetMapping
-    public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        model.addAttribute("students", studentService.findAll(keyword));
+    public String list(@RequestParam(value = "keyword", required = false) String keyword,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "5") int size,
+                       Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<Student> studentPage = studentService.findAll(keyword, pageable);
+        
+        model.addAttribute("page", studentPage);
+        model.addAttribute("students", studentPage.getContent());
         model.addAttribute("keyword", keyword);
         return "students/list";
     }

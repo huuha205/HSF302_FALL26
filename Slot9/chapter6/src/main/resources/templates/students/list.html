@@ -48,7 +48,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="student, stat : ${students}">
-                    <td th:text="${stat.count}">1</td>
+                    <td th:text="${page.number * page.size + stat.count}">1</td>
                     <td th:text="${student.id}">1</td>
                     <td>
                         <a th:href="@{/students/{id}(id=${student.id})}"
@@ -87,8 +87,24 @@
         </div>
     </div>
 
-    <div th:unless="${#lists.isEmpty(students)}" class="text-muted mt-2">
-        <small>Tổng: <strong th:text="${#lists.size(students)}">0</strong> sinh viên</small>
+    <div class="d-flex justify-content-between align-items-center mt-3" th:unless="${page.empty}">
+        <div class="text-muted">
+            <small>Đang hiển thị <strong th:text="${page.numberOfElements}">0</strong> / Tổng <strong th:text="${page.totalElements}">0</strong> sinh viên</small>
+        </div>
+        
+        <nav th:if="${page.totalPages > 1}">
+            <ul class="pagination mb-0">
+                <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/students(keyword=${keyword}, page=${page.number - 1}, size=${page.size})}">Trước</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:classappend="${i == page.number} ? 'active'">
+                    <a class="page-link" th:href="@{/students(keyword=${keyword}, page=${i}, size=${page.size})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/students(keyword=${keyword}, page=${page.number + 1}, size=${page.size})}">Sau</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 </section>

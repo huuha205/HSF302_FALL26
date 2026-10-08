@@ -4,10 +4,12 @@ import com.hsf302.chapter6.entity.Student;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudentService {
 
-    List<Student> findAll(String keyword);
+    Page<Student> findAll(String keyword, Pageable pageable);
 
     Optional<Student> findById(Long id);
 

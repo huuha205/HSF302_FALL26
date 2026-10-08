@@ -3,6 +3,8 @@ package com.hsf302.chapter6.service.impl;
 import com.hsf302.chapter6.entity.Student;
 import com.hsf302.chapter6.repository.StudentRepository;
 import com.hsf302.chapter6.service.StudentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +23,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> findAll(String keyword) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+    public Page<Student> findAll(String keyword, Pageable pageable) {
         if (keyword != null && !keyword.isBlank()) {
-            return studentRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword.trim(), keyword.trim(), sort);
+            return studentRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword.trim(), keyword.trim(), pageable);
         }
-        return studentRepository.findAll(sort);
+        return studentRepository.findAll(pageable);
     }
 
     @Override

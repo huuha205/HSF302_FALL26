@@ -3,6 +3,8 @@ package com.hsf302.chapter6.repository;
 import com.hsf302.chapter6.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,5 +17,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByEmailIgnoreCaseAndIdNot(String email, Long id);
 
     /** Tìm kiếm theo tên hoặc email */
-    List<Student> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String name, String email, org.springframework.data.domain.Sort sort);
+    Page<Student> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String name, String email, Pageable pageable);
 }
