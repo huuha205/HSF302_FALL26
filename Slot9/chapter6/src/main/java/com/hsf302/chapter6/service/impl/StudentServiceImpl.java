@@ -1,5 +1,6 @@
 package com.hsf302.chapter6.service.impl;
 
+import com.hsf302.chapter6.dto.StudentForm;
 import com.hsf302.chapter6.entity.Student;
 import com.hsf302.chapter6.repository.StudentRepository;
 import com.hsf302.chapter6.service.StudentService;
@@ -37,21 +38,26 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional                      // ghi dữ liệu → bỏ readOnly
-    public Student create(Student student) {
-        student.setId(null);            // luôn INSERT, không bao giờ ghi đè bản ghi cũ
+    public Student create(StudentForm form) {
+        Student student = new Student();
+        student.setName(form.getName());
+        student.setEmail(form.getEmail());
+        student.setAge(form.getAge());
+        student.setMajor(form.getMajor());
+        student.setGpa(form.getGpa());
         return studentRepository.save(student);
     }
 
     @Override
     @Transactional
-    public boolean update(Long id, Student data) {
+    public boolean update(Long id, StudentForm form) {
         return studentRepository.findById(id)
                 .map(existing -> {
-                    existing.setName(data.getName());
-                    existing.setEmail(data.getEmail());
-                    existing.setAge(data.getAge());
-                    existing.setMajor(data.getMajor());
-                    existing.setGpa(data.getGpa());
+                    existing.setName(form.getName());
+                    existing.setEmail(form.getEmail());
+                    existing.setAge(form.getAge());
+                    existing.setMajor(form.getMajor());
+                    existing.setGpa(form.getGpa());
                     // Không cần gọi save(): entity đang "managed",
                     // Hibernate tự sinh UPDATE khi transaction commit (dirty checking)
                     return true;

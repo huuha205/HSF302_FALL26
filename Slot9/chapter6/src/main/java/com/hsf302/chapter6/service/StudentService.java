@@ -1,6 +1,7 @@
 package com.hsf302.chapter6.service;
 
 import com.hsf302.chapter6.entity.Student;
+import com.hsf302.chapter6.dto.StudentForm;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,10 @@ public interface StudentService {
 
     Optional<Student> findById(Long id);
 
-    Student create(Student student);
+    Student create(StudentForm form);
 
     /** @return true nếu tìm thấy và cập nhật; false nếu không tồn tại id */
-    boolean update(Long id, Student data);
+    boolean update(Long id, StudentForm form);
 
     /** @return true nếu xoá được; false nếu không tồn tại id */
     boolean delete(Long id);

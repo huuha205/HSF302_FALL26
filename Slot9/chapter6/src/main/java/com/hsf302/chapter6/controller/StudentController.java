@@ -1,6 +1,7 @@
 package com.hsf302.chapter6.controller;
 
 import com.hsf302.chapter6.entity.Student;
+import com.hsf302.chapter6.dto.StudentForm;
 import com.hsf302.chapter6.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -79,12 +80,12 @@ public class StudentController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("student", new Student());
+        model.addAttribute("student", new StudentForm());
         return formView(model, false);
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("student") Student student,
+    public String create(@Valid @ModelAttribute("student") StudentForm student,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes ra) {
@@ -114,7 +115,8 @@ public class StudentController {
     public String showEditForm(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
         return studentService.findById(id)
                 .map(student -> {
-                    model.addAttribute("student", student);
+                    StudentForm form = new StudentForm(student.getId(), student.getName(), student.getEmail(), student.getAge(), student.getMajor(), student.getGpa());
+                    model.addAttribute("student", form);
                     return formView(model, true);
                 })
                 .orElseGet(() -> {
@@ -125,7 +127,7 @@ public class StudentController {
 
     @PostMapping("/{id}/edit")
     public String update(@PathVariable("id") Long id,
-                         @Valid @ModelAttribute("student") Student student,
+                         @Valid @ModelAttribute("student") StudentForm student,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes ra) {
