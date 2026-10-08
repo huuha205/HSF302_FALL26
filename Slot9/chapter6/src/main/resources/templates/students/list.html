@@ -9,9 +9,17 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><i class="bi bi-people-fill me-2"></i>Danh sách sinh viên</h2>
-        <a th:href="@{/students/create}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i>Thêm sinh viên
-        </a>
+        <div class="d-flex gap-2">
+            <form th:action="@{/students}" method="get" class="d-flex">
+                <input type="text" name="keyword" th:value="${keyword}" class="form-control me-2" placeholder="Tìm tên, email..." style="min-width: 250px;">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+            <a th:href="@{/students/create}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i>Thêm sinh viên
+            </a>
+        </div>
     </div>
 
     <div class="card shadow-sm">

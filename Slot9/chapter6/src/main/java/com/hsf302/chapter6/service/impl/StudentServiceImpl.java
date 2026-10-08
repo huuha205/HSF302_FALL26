@@ -21,8 +21,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> findAll() {
-        return studentRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    public List<Student> findAll(String keyword) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        if (keyword != null && !keyword.isBlank()) {
+            return studentRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword.trim(), keyword.trim(), sort);
+        }
+        return studentRepository.findAll(sort);
     }
 
     @Override
