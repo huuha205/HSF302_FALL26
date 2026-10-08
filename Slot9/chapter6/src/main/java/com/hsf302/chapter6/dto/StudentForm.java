@@ -20,8 +20,8 @@ public class StudentForm {
     @Max(value = 30, message = "Tuổi tối đa là 30")
     private Integer age;
 
-    @NotBlank(message = "Chuyên ngành không được để trống")
-    private String major;
+    @NotNull(message = "Chuyên ngành không được để trống")
+    private Long majorId;
 
     @NotNull(message = "GPA không được để trống")
     @DecimalMin(value = "0.0", message = "GPA tối thiểu là 0.0")
@@ -30,12 +30,12 @@ public class StudentForm {
 
     public StudentForm() {}
 
-    public StudentForm(Long id, String name, String email, Integer age, String major, Double gpa) {
+    public StudentForm(Long id, String name, String email, Integer age, Long majorId, Double gpa) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
-        this.major = major;
+        this.majorId = majorId;
         this.gpa = gpa;
     }
 
@@ -51,8 +51,8 @@ public class StudentForm {
     public Integer getAge() { return age; }
     public void setAge(Integer age) { this.age = age; }
 
-    public String getMajor() { return major; }
-    public void setMajor(String major) { this.major = major; }
+    public Long getMajorId() { return majorId; }
+    public void setMajorId(Long majorId) { this.majorId = majorId; }
 
     public Double getGpa() { return gpa; }
     public void setGpa(Double gpa) { this.gpa = gpa; }

@@ -32,7 +32,7 @@ public class StudentController {
 
     /** Chạy trước MỌI handler trong controller → view nào cũng có ${majors} */
     @ModelAttribute("majors")
-    public List<String> majors() {
+    public List<com.hsf302.chapter6.entity.Major> majors() {
         return studentService.getMajors();
     }
 
@@ -115,7 +115,7 @@ public class StudentController {
     public String showEditForm(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
         return studentService.findById(id)
                 .map(student -> {
-                    StudentForm form = new StudentForm(student.getId(), student.getName(), student.getEmail(), student.getAge(), student.getMajor(), student.getGpa());
+                    StudentForm form = new StudentForm(student.getId(), student.getName(), student.getEmail(), student.getAge(), student.getMajor().getId(), student.getGpa());
                     model.addAttribute("student", form);
                     return formView(model, true);
                 })

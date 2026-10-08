@@ -81,7 +81,7 @@
                     </td>
                     <td th:text="${student.email}">email</td>
                     <td th:text="${student.age}">20</td>
-                    <td><span class="badge bg-secondary" th:text="${student.major}">CNTT</span></td>
+                    <td><span class="badge bg-secondary" th:text="${student.major.name}">CNTT</span></td>
                     <td>
                         <span th:classappend="${student.gpa >= 3.5} ? 'gpa-high' :
                                               (${student.gpa >= 2.5} ? 'gpa-mid' : 'gpa-low')"

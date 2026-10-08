@@ -2,7 +2,9 @@ package com.hsf302.chapter6.service.impl;
 
 import com.hsf302.chapter6.dto.StudentForm;
 import com.hsf302.chapter6.entity.Student;
+import com.hsf302.chapter6.entity.Major;
 import com.hsf302.chapter6.repository.StudentRepository;
+import com.hsf302.chapter6.repository.MajorRepository;
 import com.hsf302.chapter6.service.StudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +20,11 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final MajorRepository majorRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, MajorRepository majorRepository) {
         this.studentRepository = studentRepository;
+        this.majorRepository = majorRepository;
     }
 
     @Override
@@ -43,7 +47,10 @@ public class StudentServiceImpl implements StudentService {
         student.setName(form.getName());
         student.setEmail(form.getEmail());
         student.setAge(form.getAge());
-        student.setMajor(form.getMajor());
+        
+        Major major = majorRepository.findById(form.getMajorId()).orElseThrow(() -> new IllegalArgumentException("Invalid major Id:" + form.getMajorId()));
+        student.setMajor(major);
+        
         student.setGpa(form.getGpa());
         return studentRepository.save(student);
     }
@@ -56,7 +63,10 @@ public class StudentServiceImpl implements StudentService {
                     existing.setName(form.getName());
                     existing.setEmail(form.getEmail());
                     existing.setAge(form.getAge());
-                    existing.setMajor(form.getMajor());
+                    
+                    Major major = majorRepository.findById(form.getMajorId()).orElseThrow(() -> new IllegalArgumentException("Invalid major Id:" + form.getMajorId()));
+                    existing.setMajor(major);
+                    
                     existing.setGpa(form.getGpa());
                     // Không cần gọi save(): entity đang "managed",
                     // Hibernate tự sinh UPDATE khi transaction commit (dirty checking)
@@ -84,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<String> getMajors() {
-        return List.of("CNTT", "KTPM", "HTTT", "ATTT", "MMT");
+    public List<Major> getMajors() {
+        return majorRepository.findAll();
     }
 }

@@ -1,6 +1,7 @@
 package com.hsf302.chapter6.service;
 
 import com.hsf302.chapter6.entity.Student;
+import com.hsf302.chapter6.entity.Major;
 import com.hsf302.chapter6.dto.StudentForm;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface StudentService {
     /** Kiểm tra email trùng. excludeId = null khi thêm mới, = id hiện tại khi cập nhật */
     boolean isEmailTaken(String email, Long excludeId);
 
-    List<String> getMajors();
+    List<Major> getMajors();
 }

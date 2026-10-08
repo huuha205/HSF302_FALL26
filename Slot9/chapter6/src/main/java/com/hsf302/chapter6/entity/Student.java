@@ -1,6 +1,7 @@
 package com.hsf302.chapter6.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Nationalized;
 
 @Entity
 @Table(name = "students")
@@ -10,6 +11,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Nationalized
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
@@ -19,8 +21,9 @@ public class Student {
     @Column(name = "age", nullable = false)
     private Integer age;
 
-    @Column(name = "major", nullable = false, length = 20)
-    private String major;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id", nullable = false)
+    private Major major;
 
     @Column(name = "gpa", nullable = false)
     private Double gpa;
@@ -31,7 +34,7 @@ public class Student {
     public Student() {}
 
     /** Dùng cho seed data — không có id vì DB tự sinh */
-    public Student(String name, String email, Integer age, String major, Double gpa) {
+    public Student(String name, String email, Integer age, Major major, Double gpa) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -53,8 +56,8 @@ public class Student {
     public Integer getAge() { return age; }
     public void setAge(Integer age) { this.age = age; }
 
-    public String getMajor() { return major; }
-    public void setMajor(String major) { this.major = major; }
+    public Major getMajor() { return major; }
+    public void setMajor(Major major) { this.major = major; }
 
     public Double getGpa() { return gpa; }
     public void setGpa(Double gpa) { this.gpa = gpa; }
