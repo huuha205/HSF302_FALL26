@@ -41,13 +41,22 @@ public class StudentController {
     public String list(@RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "size", defaultValue = "5") int size,
+                       @RequestParam(value = "sort", defaultValue = "id,asc") String[] sort,
                        Model model) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        String sortField = sort[0];
+        String sortDir = sort.length > 1 ? sort[1] : "asc";
+        Sort.Direction direction = sortDir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sortOrder = Sort.by(direction, sortField);
+
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
         Page<Student> studentPage = studentService.findAll(keyword, pageable);
         
         model.addAttribute("page", studentPage);
         model.addAttribute("students", studentPage.getContent());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equalsIgnoreCase("asc") ? "desc" : "asc");
         return "students/list";
     }
 
