@@ -28,7 +28,8 @@ public class SanPhamController {
     @PostMapping("/them")
     public String xuLyForm(@ModelAttribute("sanPham") SanPham sanPham, RedirectAttributes ra) {
         danhSach.add(sanPham);
-        ra.addFlashAttribute("thongBao", "Thêm sản phẩm thành công!");   // sống qua 1 lần redirect
+        // Thay thongBao = successMsg để dùng chung fragment alerts
+        ra.addFlashAttribute("successMsg", "Thêm sản phẩm thành công!");   
         return "redirect:/sanpham/ket-qua";
     }
 
