@@ -6,4 +6,5 @@ module fe.de201028.ch08javafx {
     exports fe.de201028.ch08javafx;
     exports fe.de201028.ch08javafx.common;
     exports fe.de201028.ch08javafx.b1;
+    exports fe.de201028.ch08javafx.b2;
 }
