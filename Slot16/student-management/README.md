@@ -49,3 +49,9 @@ Bộ kiểm thử dùng H2 in-memory database, chạy độc lập không cần 
 7. `feat(ui): add, update, delete and clear student`
 8. `style(ui): add stylesheet and polish UX`
 9. `docs: add README with setup and run guide`
+
+## Các tính năng Nâng cao (Bài 8 - Bonus)
+- **8.2 Async loading với Task (+3đ):** Thực hiện tải dữ liệu và tìm kiếm trên background daemon thread thông qua `javafx.concurrent.Task`, hiển thị trạng thái `Loading...` và disable ô search trong lúc tải, cập nhật UI mượt mà không bị giật lag.
+  - Nhánh: `feature/async-loading`
+- **8.3 Export CSV (+2đ):** Bổ sung nút **Export CSV** mở `FileChooser` cho phép người dùng chọn nơi lưu file `.csv`. Hỗ trợ mã hóa UTF-8 BOM (`\uFEFF`) giúp Excel mở file tiếng Việt đúng dấu và escape dấu phẩy `,` cùng dấu ngoặc kép `"`.
+  - Nhánh: `feature/export-csv`
