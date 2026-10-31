@@ -8,7 +8,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class StudentController {
@@ -165,5 +171,29 @@ public class StudentController {
     private void showError(String msg) {
         messageLabel.setText(msg);
         messageLabel.setStyle("-fx-text-fill: red;");
+    }
+
+    @FXML
+    private void handleExport() {
+        FileChooser fc = new FileChooser();
+        fc.setInitialFileName("students.csv");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+        File file = fc.showSaveDialog(tableView.getScene().getWindow());
+        if (file == null) return;
+        try (PrintWriter pw = new PrintWriter(file, StandardCharsets.UTF_8)) {
+            pw.print('\uFEFF');
+            pw.println("ID,Name,Email,Age");
+            for (Student s : data) {
+                pw.printf("%d,%s,%s,%d%n", s.getId(), csv(s.getName()), csv(s.getEmail()), s.getAge());
+            }
+            showInfo("Exported " + data.size() + " rows to " + file.getName());
+        } catch (IOException e) {
+            showError("Export failed: " + e.getMessage());
+        }
+    }
+
+    private static String csv(String v) {
+        if (v == null) return "";
+        return (v.contains(",") || v.contains("\"")) ? "\"" + v.replace("\"", "\"\"") + "\"" : v;
     }
 }
