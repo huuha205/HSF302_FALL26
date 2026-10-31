@@ -6,6 +6,7 @@ import com.example.data.pojo.Student;
 import com.example.data.service.StudentService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.function.Supplier;
 
 @Component
 public class StudentController {
@@ -44,24 +47,38 @@ public class StudentController {
         loadData();
     }
 
-    private void loadData() {
-        try {
-            data.setAll(studentService.findAll());
-            statusLabel.setText("Loaded " + data.size() + " students");
-        } catch (Exception e) {
-            showError("Cannot load data: " + e.getMessage());
+    private void runAsync(Supplier<List<Student>> query, String prefix) {
+        Task<List<Student>> task = new Task<>() {
+            @Override
+            protected List<Student> call() {
+                return query.get();
+            }
+        };
+        statusLabel.setText("Loading...");
+        searchField.setDisable(true);
+        task.setOnSucceeded(e -> {
+            data.setAll(task.getValue());
+            statusLabel.setText(prefix + " " + data.size() + " students");
+            searchField.setDisable(false);
+        });
+        task.setOnFailed(e -> {
+            showError("Cannot load data: " + task.getException().getMessage());
             statusLabel.setText("Database error");
-        }
+            searchField.setDisable(false);
+        });
+        Thread t = new Thread(task, "db-loader");
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private void loadData() {
+        runAsync(studentService::findAll, "Loaded");
     }
 
     @FXML
     private void handleSearch() {
-        try {
-            data.setAll(studentService.search(searchField.getText()));
-            statusLabel.setText("Found " + data.size() + " students");
-        } catch (Exception e) {
-            showError(e.getMessage());
-        }
+        String kw = searchField.getText();
+        runAsync(() -> studentService.search(kw), "Found");
     }
 
     @FXML
@@ -156,23 +173,6 @@ public class StudentController {
         nameField.requestFocus();
     }
 
-    private void fillForm(Student s) {
-        idField.setText(String.valueOf(s.getId()));
-        nameField.setText(s.getName());
-        emailField.setText(s.getEmail());
-        ageField.setText(String.valueOf(s.getAge()));
-    }
-
-    private void showInfo(String msg) {
-        messageLabel.setText(msg);
-        messageLabel.setStyle("-fx-text-fill: green;");
-    }
-
-    private void showError(String msg) {
-        messageLabel.setText(msg);
-        messageLabel.setStyle("-fx-text-fill: red;");
-    }
-
     @FXML
     private void handleExport() {
         FileChooser fc = new FileChooser();
@@ -195,5 +195,22 @@ public class StudentController {
     private static String csv(String v) {
         if (v == null) return "";
         return (v.contains(",") || v.contains("\"")) ? "\"" + v.replace("\"", "\"\"") + "\"" : v;
+    }
+
+    private void fillForm(Student s) {
+        idField.setText(String.valueOf(s.getId()));
+        nameField.setText(s.getName());
+        emailField.setText(s.getEmail());
+        ageField.setText(String.valueOf(s.getAge()));
+    }
+
+    private void showInfo(String msg) {
+        messageLabel.setText(msg);
+        messageLabel.setStyle("-fx-text-fill: green;");
+    }
+
+    private void showError(String msg) {
+        messageLabel.setText(msg);
+        messageLabel.setStyle("-fx-text-fill: red;");
     }
 }
