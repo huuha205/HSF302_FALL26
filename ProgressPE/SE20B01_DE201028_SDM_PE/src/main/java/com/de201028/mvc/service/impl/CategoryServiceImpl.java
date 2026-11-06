@@ -1,4 +1,28 @@
 package com.de201028.mvc.service.impl;
 
-public class CategoryServiceImpl {
+import com.de201028.mvc.entity.Category;
+import com.de201028.mvc.repository.CategoryRepository;
+import com.de201028.mvc.service.CategoryService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+
+    private final CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category getCategoryById(Integer categoryId) {
+        return categoryRepository.findById(categoryId).orElse(null);
+    }
 }

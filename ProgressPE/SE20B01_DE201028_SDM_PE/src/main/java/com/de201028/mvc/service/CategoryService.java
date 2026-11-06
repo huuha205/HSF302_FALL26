@@ -1,4 +1,9 @@
-package com.de201028.mvc.service.impl;
+package com.de201028.mvc.service;
 
-public class CategoryService {
+import com.de201028.mvc.entity.Category;
+import java.util.List;
+
+public interface CategoryService {
+    List<Category> getAllCategories();
+    Category getCategoryById(Integer categoryId);
 }
